@@ -2,13 +2,18 @@ package com.fotos.redsocial.entity;
 
 
 
-import org.springframework.data.neo4j.core.schema.*;
-
-import lombok.*;
-
 import java.util.List;
 
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
+import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
+
 import com.fotos.redsocial.entity.relationship.HousesRelationship;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Node
 @Data
@@ -44,4 +49,15 @@ public class Shelter {
 
     @Relationship(type = "FOLLOWS", direction = Relationship.Direction.INCOMING)
     private List<User> followers;
+
+    //by default, the animal has these principal characteristics.
+     //users and animals are set later
+    public Shelter(String name, String address, Location location){
+        this.name = name;
+        this.address = address;
+        this.locatedIn = location;
+        
+    }
+
+    
 }

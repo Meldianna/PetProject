@@ -68,7 +68,7 @@ public class User {
 
     // User -> Species (LOOKING_FOR)
     @Relationship(type = "LOOKING_FOR", direction = Relationship.Direction.OUTGOING)
-    private List<Species> lookingFor;
+    private List<Specie> lookingFor;
 
     // User -> Trait (PREFERS)
     @Relationship(type = "PREFERS", direction = Relationship.Direction.OUTGOING)

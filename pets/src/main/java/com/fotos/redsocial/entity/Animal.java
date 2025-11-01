@@ -2,6 +2,7 @@ package com.fotos.redsocial.entity;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
@@ -31,7 +32,7 @@ public class Animal {
 
     // Animal -> Species (IS_A)
     @Relationship(type = "IS_A", direction = Relationship.Direction.OUTGOING)
-    private Species species;
+    private Specie specie;
 
     // Shelter -> HOUSES -> Animal
     @Relationship(type = "HOUSES", direction = Relationship.Direction.INCOMING)
@@ -55,6 +56,27 @@ public class Animal {
      */
 
      @Relationship(type = "HAS_TRAIT", direction = Relationship.Direction.OUTGOING)
-     private List<Trait> trait;
+     private List<Trait> traits;
+
+
+     //by default, the animal has these principal characteristics.
+     //traits and users are set later
+     public Animal(String name, int age, String gender, Specie specie, Shelter shelter){
+            this.name = name;
+            this.age = age;
+            this.gender = gender;
+            this.specie = specie;
+            this.shelter = shelter;
+            this.status = Status.AVAILABLE; //becomes available by default
+            
+            //initating the data structures
+            this.caretakers = new ArrayList<>();
+            this.traits = new ArrayList<>();
+
+            //initating the users
+            this.adopter = null;
+            this.fosterer = null;
+     }
+
 
 }

@@ -2,6 +2,7 @@ package com.fotos.redsocial.entity;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
@@ -35,4 +36,16 @@ public class Location {
     // Eventos que toman lugar en esta ubicación (entrada desde Event)
     @Relationship(type = "TAKES_PLACE_IN", direction = Relationship.Direction.INCOMING)
     private List<Event> eventsHere;
+
+    public String getState(){
+        return this.state;
+    }
+
+    public Location (String name, String state){
+        this.name = name;
+        this.state = state;
+        this.roadTo = new ArrayList<>();
+        this.eventsHere = new ArrayList<>();
+
+    }
 }

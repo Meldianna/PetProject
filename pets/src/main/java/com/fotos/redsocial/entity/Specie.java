@@ -31,4 +31,8 @@ public class Specie {
     // Usuarios buscando esta especie: (:User)-[:LOOKING_FOR]->(:Species)
     @Relationship(type = "LOOKING_FOR", direction = Relationship.Direction.INCOMING)
     private List<User> lookingForByUsers;
+
+    public Specie(String name){
+        this.name = name;
+    }
 }

@@ -13,7 +13,7 @@ public class ShelterResponse {
 
     private String name;
     private String address;
-    private Location locatedIn;
+    private LocationResponse locatedIn;
     private List<SimpleAnimalResponse> rescuedAnimals;
     private List<SimpleUserResponse> followers;
 

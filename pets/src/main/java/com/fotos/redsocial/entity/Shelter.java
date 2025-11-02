@@ -2,6 +2,7 @@ package com.fotos.redsocial.entity;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
@@ -56,6 +57,12 @@ public class Shelter {
         this.name = name;
         this.address = address;
         this.locatedIn = location;
+
+        this.administers = new ArrayList<>();
+        this.followers = new ArrayList<>();
+        this.workers = new ArrayList<>();
+        this.houses = new ArrayList<>();
+        this.participatesIn = new ArrayList<>();
         
     }
 

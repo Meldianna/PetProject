@@ -31,4 +31,9 @@ public class Trait {
     // User que prefiere este trait (:User)-[:PREFERS]->(:Trait)
     @Relationship(type = "PREFERS", direction = Relationship.Direction.INCOMING)
     private List<User> preferredBy;
+
+    public Trait(String desc){
+        this.description = desc;
+
+    }
 }

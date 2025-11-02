@@ -13,8 +13,8 @@ public class AnimalRequest {
     private String name;
     private String gender;
     private int age;
-    private Specie specie;
-    private Long sheltedId;
-    private List<TraitRequest> traits;
+    private String specie;
+    private String shelterName;
+    private List<String> traits;
 
 }

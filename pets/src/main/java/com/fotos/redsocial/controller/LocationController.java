@@ -27,5 +27,4 @@ public class LocationController {
         throw new RuntimeException(error.getMessage());
         }
     }
-    
 }

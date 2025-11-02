@@ -22,9 +22,7 @@ public class AnimalController {
     @Autowired
     private AnimalServiceImpl animalService;
     
-
     public AnimalController(){}
-    
 
     @PostMapping("/add")
     public ResponseEntity<Object> createAnimal(@RequestBody AnimalRequest request) {

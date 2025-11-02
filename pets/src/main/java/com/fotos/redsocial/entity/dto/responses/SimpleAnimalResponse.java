@@ -16,4 +16,5 @@ public class SimpleAnimalResponse {
     private final SpecieResponse specie;
     private final List<TraitResponse> traits;
     private final Status status;
+    private final String shelterName;
 }

@@ -1,7 +1,6 @@
 package com.fotos.redsocial.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,6 @@ import com.fotos.redsocial.repository.AnimalRepository;
 import com.fotos.redsocial.repository.ShelterRepository;
 import com.fotos.redsocial.repository.SpecieRepository;
 import com.fotos.redsocial.repository.TraitRepository;
-
 import com.fotos.redsocial.service.interfaces.AnimalService;
 
 
@@ -45,23 +43,17 @@ public class AnimalServiceImpl implements AnimalService{
     @Override
     public SimpleAnimalResponse createAnimal(AnimalRequest request) {
         
-        Shelter shelter = shelterRepository.findById(request.getSheltedId())
-        .get();
-
-        Specie specie = specieRepository.findByName(request.getSpecie().getName());
-
+        Shelter shelter = shelterRepository.findByName(request.getShelterName());
         if (shelter == null) throw new RuntimeException("Shelter no encontrado");
 
+        Specie specie = specieRepository.findByName(request.getSpecie());
+        if (specie == null) throw new RuntimeException("Especie no encontrada");
+
         //consiguiendo los rasgos
-        List<String> traitNames = request.getTraits()
-            .stream()
-            .map(trait -> trait.getDescription())
-            .toList();
+        List<String> traitNames = request.getTraits();
 
         //buscando los rasgos
-        List<Trait> traitList = traitRepository.findAllByNameInList(traitNames);
-
-
+        List<Trait> traitList = traitRepository.findAllByDescriptionIn(traitNames);
         //creando al animal
         Animal newAnimal = new Animal(
             request.getName(),
@@ -78,6 +70,4 @@ public class AnimalServiceImpl implements AnimalService{
         
         return animalMapper.toSimpleAnimalResponse(newAnimal);
     }
-    
-   
 }

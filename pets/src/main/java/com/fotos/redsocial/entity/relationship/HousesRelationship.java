@@ -29,5 +29,8 @@ public class HousesRelationship {
     @TargetNode
     private Animal animal;
 
-    
+    public HousesRelationship(LocalDate since, Animal animal){
+        this.since = since;
+        this.animal = animal;
+    }
 }

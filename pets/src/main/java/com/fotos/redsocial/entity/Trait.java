@@ -21,7 +21,7 @@ public class Trait {
     @Id @GeneratedValue
     private Long id;
 
-    //private String name; 
+    //private String name;
     private String description;
 
     // Species -> HAS_TRAIT -> Trait (incoming)

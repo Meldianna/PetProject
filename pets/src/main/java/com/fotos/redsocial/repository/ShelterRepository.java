@@ -7,5 +7,7 @@ import com.fotos.redsocial.entity.Shelter;
 
 @Repository
 public interface ShelterRepository extends Neo4jRepository<Shelter, Long>{
+
+    Shelter findByName(String name);
     
 }

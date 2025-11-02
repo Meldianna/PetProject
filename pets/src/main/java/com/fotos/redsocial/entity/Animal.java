@@ -54,10 +54,8 @@ public class Animal {
      * 2- siguiendo la lógica, un animal puede ser apadrinado por varias personas
      * 3- siguiendo la lógica, un animal está en tránsito en la casa u hogar de una persona, pero puede tener muchos padrinos.
      */
-
      @Relationship(type = "HAS_TRAIT", direction = Relationship.Direction.OUTGOING)
      private List<Trait> traits;
-
 
      //by default, the animal has these principal characteristics.
      //traits and users are set later

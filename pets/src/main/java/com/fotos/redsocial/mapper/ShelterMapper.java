@@ -1,8 +1,7 @@
 package com.fotos.redsocial.mapper;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,7 +11,6 @@ import com.fotos.redsocial.entity.dto.responses.LocationResponse;
 import com.fotos.redsocial.entity.dto.responses.ShelterResponse;
 import com.fotos.redsocial.entity.dto.responses.SimpleAnimalResponse;
 import com.fotos.redsocial.entity.dto.responses.SimpleUserResponse;
-import com.fotos.redsocial.entity.relationship.HousesRelationship;
 
 @Component
 public class ShelterMapper {
@@ -27,7 +25,7 @@ public class ShelterMapper {
 
     public ShelterResponse toShelterResponse(Shelter shelter){
         LocationResponse location = locationMapper.tLocationResponse(shelter.getLocatedIn());
-        List<SimpleAnimalResponse> animals = animalMapper.fromHousesRelationshipList(shelter.getHouses());
+        Set<SimpleAnimalResponse> animals = animalMapper.fromHousesRelationshipList(shelter.getHouses());
         List<SimpleUserResponse> followers = userMapper.toSimpleUserResponseList(shelter.getFollowers());
 
         return new ShelterResponse(

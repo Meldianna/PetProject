@@ -1,7 +1,7 @@
 package com.fotos.redsocial.mapper;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,8 @@ public class AnimalMapper {
             animal.getGender(),
             specie,
             traitList,
-            animal.getStatus()
+            animal.getStatus(),
+            animal.getShelter().getName()
         );
     }
 
@@ -43,15 +44,15 @@ public class AnimalMapper {
         .collect(Collectors.toList());
     }
 
-    //para obtener los animales de la relación HOUSES 
-    public List<SimpleAnimalResponse> fromHousesRelationshipList(List<HousesRelationship> relationships) {
+    //para obtener los animales de la relación HOUSES
+    public Set<SimpleAnimalResponse> fromHousesRelationshipList(Set<HousesRelationship> relationships) {
        
         return relationships.stream()
             //Otenemos el animal de la relación
-            .map(HousesRelationship::getAnimal) 
+            .map(HousesRelationship::getAnimal)
             //Lo mapeamos a su DTO
-            .map(this::toSimpleAnimalResponse) 
-            .collect(Collectors.toList());
+            .map(this::toSimpleAnimalResponse)
+            .collect(Collectors.toSet());
     }
     
 }

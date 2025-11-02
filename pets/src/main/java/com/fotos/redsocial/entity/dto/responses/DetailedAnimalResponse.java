@@ -16,6 +16,7 @@ public class DetailedAnimalResponse {
     private Status status;
     private SpecieResponse specie;
     private List<TraitResponse> traits;
+    private String shelterName;
 
     private List<SimpleUserResponse> caretakers;
     private SimpleUserResponse adopter;

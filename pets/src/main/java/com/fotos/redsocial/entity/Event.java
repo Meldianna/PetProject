@@ -1,10 +1,17 @@
 package com.fotos.redsocial.entity;
 
 
-import org.springframework.data.neo4j.core.schema.*;
-import lombok.*;
 import java.time.LocalDate;
 import java.util.List;
+
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
+import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Node
 @Data
@@ -22,7 +29,7 @@ public class Event {
     @Relationship(type = "TAKES_PLACE_IN", direction = Relationship.Direction.OUTGOING)
     private Location location;
 
-    // Event -> User (ORGANIZED_BY) 
+    // Event -> User (ORGANIZED_BY)
     @Relationship(type = "ORGANIZED_BY", direction = Relationship.Direction.OUTGOING)
     private User organizer;
 

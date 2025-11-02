@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fotos.redsocial.entity.dto.requests.SpecieRequest;
-import com.fotos.redsocial.entity.dto.requests.TraitRequest;
 import com.fotos.redsocial.entity.dto.responses.SpecieResponse;
-import com.fotos.redsocial.entity.dto.responses.TraitResponse;
 import com.fotos.redsocial.service.SpecieServiceImpl;
 
 @RestController
@@ -23,7 +21,7 @@ public class SpecieController {
 
     @PostMapping("/create")
     public  ResponseEntity<Object> createSpecie(@RequestBody SpecieRequest request) {
-         try{SpecieResponse response = specieService.createSpecie(request);
+        try{SpecieResponse response = specieService.createSpecie(request);
         return ResponseEntity.ok().body(response);
         }catch(Exception error){
         throw new RuntimeException(error.getMessage());

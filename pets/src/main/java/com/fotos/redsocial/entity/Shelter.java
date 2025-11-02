@@ -3,7 +3,9 @@ package com.fotos.redsocial.entity;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
@@ -24,7 +26,6 @@ public class Shelter {
 
     @Id @GeneratedValue
     private Long id;
-
     private String name;
     private String address;
 
@@ -38,7 +39,7 @@ public class Shelter {
 
     // Shelter -> Animal (HOUSES)
     @Relationship(type = "HOUSES", direction = Relationship.Direction.OUTGOING)
-    private List<HousesRelationship> houses;
+    private Set<HousesRelationship> houses;
 
     // Usuarios que trabajan / administran / siguen el shelter
     // (:User)-[:WORKS_FOR|:ADMINISTERS|:FOLLOWS]->(:Shelter)
@@ -57,14 +58,10 @@ public class Shelter {
         this.name = name;
         this.address = address;
         this.locatedIn = location;
-
         this.administers = new ArrayList<>();
         this.followers = new ArrayList<>();
         this.workers = new ArrayList<>();
-        this.houses = new ArrayList<>();
+        this.houses = new HashSet<>();
         this.participatesIn = new ArrayList<>();
-        
     }
-
-    
 }

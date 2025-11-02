@@ -10,5 +10,5 @@ import com.fotos.redsocial.entity.Trait;
 @Repository
 public interface TraitRepository extends Neo4jRepository<Trait, Long>{
     Trait findByDescription(String description);
-    List<Trait> findAllByNameInList(List<String> names);
+    List<Trait> findAllByDescriptionIn(List<String> description);
 }

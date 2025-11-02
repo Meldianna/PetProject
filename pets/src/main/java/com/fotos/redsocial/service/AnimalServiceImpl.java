@@ -59,7 +59,7 @@ public class AnimalServiceImpl implements AnimalService{
             .toList();
 
         //buscando los rasgos
-        List<Trait> traitList = traitRepository.findAllByNameInList(traitNames);
+        List<Trait> traitList = traitRepository.findAllByDescriptionIn(traitNames);
 
 
         //creando al animal

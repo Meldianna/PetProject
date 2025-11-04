@@ -2,8 +2,6 @@ package com.fotos.redsocial.entity.dto.requests;
 
 import java.util.List;
 
-import com.fotos.redsocial.entity.Specie;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

@@ -74,4 +74,14 @@ public class User {
     @Relationship(type = "PREFERS", direction = Relationship.Direction.OUTGOING)
     private List<Trait> preferredTraits;
     //se puede usar el PreferRelationship si queremos agregar una propiedad como "relevancia".
+    
+    @Relationship(type = "FRIENDS_WITH", direction = Relationship.Direction.OUTGOING)
+    private List<User> friendship;
+
+    public User(String name, String email, String phone, Location location){
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.livesIn = location;
+    }
 }

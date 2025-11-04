@@ -16,7 +16,6 @@ import com.fotos.redsocial.service.AnimalServiceImpl;
 
 @RestController
 @RequestMapping("/pets/animal")
-
 public class AnimalController {
     
     @Autowired

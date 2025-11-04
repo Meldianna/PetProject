@@ -1,7 +1,11 @@
 package com.fotos.redsocial.service;
 
+import java.time.LocalDate;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.fotos.redsocial.entity.Animal;
 import com.fotos.redsocial.entity.Location;
 import com.fotos.redsocial.entity.Shelter;
@@ -14,9 +18,6 @@ import com.fotos.redsocial.mapper.ShelterMapper;
 import com.fotos.redsocial.repository.AnimalRepository;
 import com.fotos.redsocial.repository.LocationRepository;
 import com.fotos.redsocial.repository.ShelterRepository;
-
-import java.time.LocalDate;
-import java.util.Optional;
 
 @Service
 public class ShelterServiceImpl {
@@ -49,13 +50,13 @@ public class ShelterServiceImpl {
         return shelterMapper.toShelterResponse(newShelter);
     }
 
-    public SimpleAnimalResponse addAnimaltoShelter(String shelterName, Long animalId) {
+    public SimpleAnimalResponse addAnimaltoShelter(String shelterName, String animalId) {
 
         Shelter shelter = shelterRepository.findByName(shelterName);
         if (shelter == null) throw new RuntimeException("Shelter no encontrado");
 
         Optional<Animal> animal = animalRepository.findById(animalId);
-        if (animal == null) throw new RuntimeException("Animal no encontrado");
+        if (animal.isEmpty()) throw new RuntimeException("Animal no encontrado");
 
         shelter.getHouses().add(new HousesRelationship(LocalDate.now(), animal.get()));
         shelterRepository.save(shelter);

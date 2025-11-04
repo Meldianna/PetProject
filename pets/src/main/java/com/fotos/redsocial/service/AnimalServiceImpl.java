@@ -45,7 +45,6 @@ public class AnimalServiceImpl implements AnimalService{
         
         Shelter shelter = shelterRepository.findByName(request.getShelterName());
         if (shelter == null) throw new RuntimeException("Shelter no encontrado");
-
         Specie specie = specieRepository.findByName(request.getSpecie());
         if (specie == null) throw new RuntimeException("Especie no encontrada");
 
@@ -66,8 +65,8 @@ public class AnimalServiceImpl implements AnimalService{
         newAnimal.setTraits(traitList);
         
         //guardando el animal
-        animalRepository.save(newAnimal);
-        
-        return animalMapper.toSimpleAnimalResponse(newAnimal);
+        Animal savedAnimal = animalRepository.save(newAnimal);
+
+        return animalMapper.toSimpleAnimalResponse(savedAnimal);
     }
 }

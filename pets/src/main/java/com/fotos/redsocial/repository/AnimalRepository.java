@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 import com.fotos.redsocial.entity.Animal;
 
 @Repository
-public interface AnimalRepository extends Neo4jRepository<Animal, Long>{
+public interface AnimalRepository extends Neo4jRepository<Animal, String>{
 
-    Optional<Animal> getAnimalById(Long id);
+    Optional<Animal> findById(String id);
     Set<Animal> getAllBySpecie(String specieName);
     
 }

@@ -29,7 +29,7 @@ public class ShelterController {
     
     
     @PostMapping("/addAnimal")
-    public ResponseEntity<Object> addAnimalToShelter(@RequestBody String shelterName, Long animalId){
+    public ResponseEntity<Object> addAnimalToShelter(@RequestBody String shelterName, String animalId){
         try {
             shelterService.addAnimaltoShelter(shelterName, animalId);
             return ResponseEntity.ok().body("Agregado el animal al shelter correctamente");

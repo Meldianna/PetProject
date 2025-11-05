@@ -1,3 +1,4 @@
+// AnimalRepository.java
 package com.fotos.redsocial.repository;
 
 import java.util.Optional;
@@ -12,6 +13,6 @@ import com.fotos.redsocial.entity.Animal;
 public interface AnimalRepository extends Neo4jRepository<Animal, String>{
 
     Optional<Animal> findById(String id);
+    Animal findByName(String name); // ⭐ NUEVO MÉTODO
     Set<Animal> getAllBySpecie(String specieName);
-    
 }

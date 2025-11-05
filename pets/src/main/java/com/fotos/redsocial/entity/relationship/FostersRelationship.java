@@ -1,3 +1,4 @@
+// FostersRelationship.java
 package com.fotos.redsocial.entity.relationship;
 
 import java.time.LocalDate;
@@ -11,14 +12,20 @@ import com.fotos.redsocial.entity.Animal;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
-
+@EqualsAndHashCode(onlyExplicitlyIncluded = true) // ⭐ Solo incluir campos marcados
+@ToString(onlyExplicitlyIncluded = true) // ⭐ Solo incluir campos marcados
 @RelationshipProperties
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class FostersRelationship {
     
-    @Id @GeneratedValue
+    @Id 
+    @GeneratedValue
     private Long id;
 
     private LocalDate fosteredSince;
@@ -26,4 +33,9 @@ public class FostersRelationship {
     @TargetNode
     private Animal fosteredAnimal;
     
+    // ⭐ Constructor sin ID para crear nuevas relaciones
+    public FostersRelationship(LocalDate fosteredSince, Animal fosteredAnimal) {
+        this.fosteredSince = fosteredSince;
+        this.fosteredAnimal = fosteredAnimal;
+    }
 }

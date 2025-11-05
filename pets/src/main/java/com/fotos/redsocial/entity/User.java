@@ -1,43 +1,51 @@
 package com.fotos.redsocial.entity;
 
-
-
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
+import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
 
 import com.fotos.redsocial.entity.relationship.AdoptsRelationship;
 import com.fotos.redsocial.entity.relationship.FostersRelationship;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-//import com.fotos.redsocial.entity.relationship.PrefersRelationship;
-
+import lombok.ToString;
 
 @Node
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true) // ⭐ Solo incluir campos marcados
+@ToString(onlyExplicitlyIncluded = true)
 public class User {
 
-    @Id @GeneratedValue
-    private Long id;
+    @Id
+    @GeneratedValue(UUIDStringGenerator.class)
+    @EqualsAndHashCode.Include // ⭐ Solo el ID y email
+    @ToString.Include
+    private String id;
 
+    @ToString.Include
     private String name;
+    
+    @EqualsAndHashCode.Include
+    @ToString.Include
     private String email;
+    
+    @ToString.Include
     private String phone;
 
-    // Relaciones hacia Location, Shelter, Animal, Event, Trait, Species
-
-    // User -> Location (LIVES_IN)
+    // Todas las relaciones se excluyen automáticamente
     @Relationship(type = "LIVES_IN", direction = Relationship.Direction.OUTGOING)
     private Location livesIn;
 
-    // User -> Shelter (WORKS_FOR, ADMINISTERS, FOLLOWS)
     @Relationship(type = "WORKS_FOR", direction = Relationship.Direction.OUTGOING)
     private Shelter worksFor;
 
@@ -47,15 +55,12 @@ public class User {
     @Relationship(type = "FOLLOWS", direction = Relationship.Direction.OUTGOING)
     private List<Shelter> follows;
 
-    // User -> Event (ENROLLED_IN)  : (:User)-[:ENROLLED_IN]->(:Event)
     @Relationship(type = "ENROLLED_IN", direction = Relationship.Direction.OUTGOING)
     private List<Event> enrolledEvents;
 
-    // User -> Event (ORGANIZER) 
     @Relationship(type = "ORGANIZED_BY", direction = Relationship.Direction.INCOMING)
     private List<Event> organizedEvents;
 
-    // User -> Animal (ADOPTS, TAKE_CARE_OF)
     @Relationship(type = "ADOPTS", direction = Relationship.Direction.OUTGOING)
     private List<AdoptsRelationship> adoptedAnimals;
 
@@ -65,15 +70,11 @@ public class User {
     @Relationship(type = "FOSTERS", direction = Relationship.Direction.OUTGOING)
     private List<FostersRelationship> fostering;
 
-
-    // User -> Species (LOOKING_FOR)
     @Relationship(type = "LOOKING_FOR", direction = Relationship.Direction.OUTGOING)
     private List<Specie> lookingFor;
 
-    // User -> Trait (PREFERS)
     @Relationship(type = "PREFERS", direction = Relationship.Direction.OUTGOING)
     private List<Trait> preferredTraits;
-    //se puede usar el PreferRelationship si queremos agregar una propiedad como "relevancia".
     
     @Relationship(type = "FRIENDS_WITH", direction = Relationship.Direction.OUTGOING)
     private List<User> friendship;
@@ -83,5 +84,16 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.livesIn = location;
+        
+        this.administers = new ArrayList<>();
+        this.follows = new ArrayList<>();
+        this.enrolledEvents = new ArrayList<>();
+        this.organizedEvents = new ArrayList<>();
+        this.adoptedAnimals = new ArrayList<>();
+        this.caringFor = new ArrayList<>();
+        this.fostering = new ArrayList<>();
+        this.lookingFor = new ArrayList<>();
+        this.preferredTraits = new ArrayList<>();
+        this.friendship = new ArrayList<>();
     }
 }

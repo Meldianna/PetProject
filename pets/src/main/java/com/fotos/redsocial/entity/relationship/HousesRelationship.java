@@ -1,6 +1,5 @@
 package com.fotos.redsocial.entity.relationship;
 
-import java.lang.annotation.Target;
 import java.time.LocalDate;
 
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
@@ -14,18 +13,23 @@ import lombok.*;
 
 @RelationshipProperties
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
-
-//usada para conocer hace cuánto está el perro en el refugio
-//podemos darle un orden de prioridad según si están más tiempo ahí
-
+@EqualsAndHashCode(onlyExplicitlyIncluded = true) // ⭐ Solo incluir campos marcados
+@ToString(onlyExplicitlyIncluded = true)
 public class HousesRelationship {
 
-    @Id @GeneratedValue
+    @Id 
+    @GeneratedValue
+    @EqualsAndHashCode.Include // ⭐ Solo el ID
+    @ToString.Include
     private Long id;
 
+    @EqualsAndHashCode.Include
+    @ToString.Include
     private LocalDate since;
 
+    // ⭐ EXCLUIR animal para evitar ciclo
     @TargetNode
     private Animal animal;
 

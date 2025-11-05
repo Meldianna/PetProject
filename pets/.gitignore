@@ -32,5 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 .pom.xml
-
-/src/main/resources/application.properties
+__MACOSX/
+.src/main/resources/application.properties
+.vscode

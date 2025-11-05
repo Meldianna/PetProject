@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.fotos.redsocial.entity.Shelter;
 
 @Repository
-public interface ShelterRepository extends Neo4jRepository<Shelter, Long>{
+public interface ShelterRepository extends Neo4jRepository<Shelter, String>{
 
     Shelter findByName(String name);
     

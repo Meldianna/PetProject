@@ -11,7 +11,13 @@ import com.fotos.redsocial.entity.Animal;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@EqualsAndHashCode(onlyExplicitlyIncluded = true) // ⭐ Solo incluir campos marcados
+@ToString(onlyExplicitlyIncluded = true) // ⭐ Solo incluir campos marcados
+@NoArgsConstructor 
 @RelationshipProperties
 @Data
 @AllArgsConstructor

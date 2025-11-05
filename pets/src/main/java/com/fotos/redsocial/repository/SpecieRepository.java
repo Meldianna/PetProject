@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.fotos.redsocial.entity.Specie;
 
 @Repository
-public interface SpecieRepository extends Neo4jRepository<Specie, Long>{
+public interface SpecieRepository extends Neo4jRepository<Specie, String>{
     Specie findByName(String name);
 
     

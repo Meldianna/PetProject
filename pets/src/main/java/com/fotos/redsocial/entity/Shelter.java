@@ -11,22 +11,33 @@ import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
+import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
 
 import com.fotos.redsocial.entity.relationship.HousesRelationship;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@EqualsAndHashCode(onlyExplicitlyIncluded = true) // ⭐ Solo incluir campos marcados
+@ToString(onlyExplicitlyIncluded = true) // ⭐ Solo incluir campos marcados
 @Node
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Shelter {
 
-    @Id @GeneratedValue
-    private Long id;
+    @Id @GeneratedValue(UUIDStringGenerator.class)
+    @EqualsAndHashCode.Include // ⭐ Solo el ID
+    @ToString.Include
+    private String id;
+
+    @EqualsAndHashCode.Include // ⭐ Solo el ID
+    @ToString.Include
     private String name;
+    
     private String address;
 
     // Shelter -> Location (LOCATED_IN)

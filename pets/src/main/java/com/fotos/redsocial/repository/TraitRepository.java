@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.fotos.redsocial.entity.Trait;
 
 @Repository
-public interface TraitRepository extends Neo4jRepository<Trait, Long>{
+public interface TraitRepository extends Neo4jRepository<Trait, String>{
     Trait findByDescription(String description);
     List<Trait> findAllByDescriptionIn(List<String> descriptions);
 }

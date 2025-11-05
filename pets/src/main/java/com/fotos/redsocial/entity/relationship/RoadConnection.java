@@ -8,7 +8,11 @@ import org.springframework.data.neo4j.core.schema.TargetNode;
 import com.fotos.redsocial.entity.Location;
 
 import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@EqualsAndHashCode(onlyExplicitlyIncluded = true) // ⭐ Solo incluir campos marcados
+@ToString(onlyExplicitlyIncluded = true) // ⭐ Solo incluir campos marcados
 @RelationshipProperties
 @Data
 @NoArgsConstructor

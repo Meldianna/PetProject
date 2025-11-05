@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fotos.redsocial.entity.dto.requests.FriendshipRequest;
-import com.fotos.redsocial.entity.dto.requests.UserAnimalRequest;
+import com.fotos.redsocial.entity.dto.requests.SimpleAnimalRequest;
 import com.fotos.redsocial.entity.dto.requests.UserRequest;
-import com.fotos.redsocial.entity.dto.responses.SimpleAnimalResponse;
+import com.fotos.redsocial.entity.dto.responses.FosterAnimalResponse;
 import com.fotos.redsocial.entity.dto.responses.SimpleUserResponse;
 import com.fotos.redsocial.service.UserServiceImpl;
 
@@ -53,7 +53,7 @@ public class UserController {
             throw new RuntimeException(error.getMessage());
             }
     }
-
+    /* 
     @PostMapping("/adopt")
     public ResponseEntity<Object> adoptAnimal(@RequestBody UserAnimalRequest request) {
         try{
@@ -63,13 +63,17 @@ public class UserController {
             throw new RuntimeException(error.getMessage());
         }
     }
-    
-    
-    
+    */
     
 
-
-
-
-
+    @PostMapping("/foster")
+    public ResponseEntity<FosterAnimalResponse> fosterAnimal(@RequestBody SimpleAnimalRequest request) {
+        try{
+            FosterAnimalResponse response = userService.fosterAnimal(request);
+            return ResponseEntity.ok(response);
+        }
+        catch(Exception error){
+            throw new RuntimeException(error.getMessage());
+        }
+    }
 }

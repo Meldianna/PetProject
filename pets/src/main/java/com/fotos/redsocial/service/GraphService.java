@@ -1,121 +1,118 @@
 package com.fotos.redsocial.service;
 
-import com.fotos.redsocial.entity.Location;
-import com.fotos.redsocial.entity.dto.responses.MSTEdgeResponse;
-import com.fotos.redsocial.entity.dto.responses.MSTResponse;
-import com.fotos.redsocial.entity.relationship.RoadConnection;
-import com.fotos.redsocial.repository.LocationRepository;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import com.fotos.redsocial.entity.dto.responses.MSTEdgeResponse;
+import com.fotos.redsocial.entity.dto.responses.MSTResponse;
+import com.fotos.redsocial.repository.LocationRepository;
+import com.fotos.redsocial.repository.ShelterRepository;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 @Service
 public class GraphService {
 
     @Autowired
     private LocationRepository locationRepository;
 
-    /**
-     * Calcula el Árbol de Expansión Mínima (MST) usando el algoritmo de Prim
-     * @param startLocationId ID de la ubicación inicial
-     * @return MSTResponse con las aristas del MST y costo total
-     */
-    public MSTResponse calculateMSTWithPrim(String startLocationId) {
-        Location startLocation = locationRepository.findByIdString(startLocationId);
-        if (startLocation == null) {
-            throw new IllegalArgumentException("Ubicación inicial no encontrada");
-        }
-        List<Location> allLocations = locationRepository.findAll();
-        if (allLocations.isEmpty()) {
-            throw new IllegalArgumentException("No hay ubicaciones en el grafo");
-        }
+    @Autowired
+    private ShelterRepository shelterRepository;
 
-        Set<String> visitedLocationIds = new HashSet<>();
-        List<MSTEdgeResponse> mstEdges = new ArrayList<>();
-        double totalDistance = 0.0;
+    public MSTResponse calculateShelterMSTWithPrim(String startShelterId) {
+    List<MSTEdgeData> allEdges = shelterRepository.getShelterConnections();
+    
+    System.out.println("DEBUG: Total de conexiones cargadas: " + allEdges.size());
+    
+    // Crear conjunto de nodos únicos
+    Set<String> allShelterIds = allEdges.stream()
+        .flatMap(e -> Stream.of(e.getSourceId(), e.getDestinationId()))
+        .collect(Collectors.toSet());
+        
+    System.out.println("DEBUG: Total de shelters únicos: " + allShelterIds.size());
 
-        // Usar PriorityQueue para seleccionar la arista de menor peso
-        PriorityQueue<MSTEdgeData> edgeQueue = new PriorityQueue<>(
-                Comparator.comparingDouble(MSTEdgeData::getDistance)
-        );
-
-        // Comenzar desde la ubicación inicial
-        visitedLocationIds.add(startLocationId);
-        addEdgesToQueue(startLocation, visitedLocationIds, edgeQueue);
-
-        while (!edgeQueue.isEmpty() && visitedLocationIds.size() < allLocations.size()) {
-            MSTEdgeData minEdge = edgeQueue.poll();
-
-            // Si ya visitamos el destino, saltamos (evita ciclos)
-            if (visitedLocationIds.contains(minEdge.getDestinationId())) {
-                continue;
-            }
-
-            // Agregar la arista al MST
-            mstEdges.add(minEdge.toResponse());
-            totalDistance += minEdge.getDistance();
-
-            // Marcar el nuevo nodo como visitado
-            visitedLocationIds.add(minEdge.getDestinationId());
-
-            // Agregar las aristas del nuevo nodo a la cola de prioridad
-            Location destinationLocation = locationRepository.findById(minEdge.getDestinationId())
-                    .orElseThrow(() -> new IllegalArgumentException("Ubicación no encontrada"));
-            addEdgesToQueue(destinationLocation, visitedLocationIds, edgeQueue);
-        }
-
-        if (visitedLocationIds.size() != allLocations.size()) {
-            throw new IllegalArgumentException(
-                    "El grafo no está completamente conectado desde la ubicación inicial"
-            );
-        }
-
-        // Construir y retornar la respuesta
-        return new MSTResponse(
-                startLocationId,
-                startLocation.getName(),
-                mstEdges,
-                allLocations.size(),
-                totalDistance
-        );
+    if (!allShelterIds.contains(startShelterId)) {
+        System.out.println("DEBUG: shelter inicial no encontrado: " + startShelterId);
+        System.out.println("DEBUG: shelters disponibles: " + allShelterIds);
+        throw new IllegalArgumentException("Shelter inicial no encontrado en el grafo");
     }
 
-    /**
-     * Agrega las aristas de una ubicación a la cola de prioridad
-     */
-    private void addEdgesToQueue(Location location, Set<String> visitedLocationIds,
-                                PriorityQueue<MSTEdgeData> edgeQueue) {
-        if (location.getRoadTo() == null) {
-            return;
-        }
+    Set<String> visited = new HashSet<>();
+    List<MSTEdgeResponse> mstEdges = new ArrayList<>();
+    double totalDistance = 0.0;
 
-        for (RoadConnection road : location.getRoadTo()) {
-            String destinationId = road.getDestination().getId();
-            // Solo agregar si el destino no ha sido visitado
-            if (!visitedLocationIds.contains(destinationId)) {
-                edgeQueue.offer(new MSTEdgeData(
-                        location.getId(),
-                        location.getName(),
-                        destinationId,
-                        road.getDestination().getName(),
-                        road.getDistance()
+    PriorityQueue<MSTEdgeData> queue = new PriorityQueue<>(Comparator.comparingDouble(MSTEdgeData::getDistance));
+
+    visited.add(startShelterId);
+    addShelterEdgesToQueue(startShelterId, allEdges, visited, queue);
+
+    while (!queue.isEmpty() && visited.size() < allShelterIds.size()) {
+        MSTEdgeData minEdge = queue.poll();
+        System.out.println("DEBUG: minEdge: " + minEdge.getSourceId());
+        if (visited.contains(minEdge.getDestinationId())) continue;
+
+        mstEdges.add(minEdge.toResponse());
+        totalDistance += minEdge.getDistance();
+        visited.add(minEdge.getDestinationId());
+
+        addShelterEdgesToQueue(minEdge.getDestinationId(), allEdges, visited, queue);
+    }
+
+    if (visited.size() != allShelterIds.size()) {
+        System.out.println("DEBUG: El grafo no está completamente conectado");
+        System.out.println("DEBUG: visitados: " + visited.size() + " de " + allShelterIds.size());
+        throw new IllegalArgumentException("El grafo de shelters no está completamente conectado");
+    }
+
+    return new MSTResponse(
+        startShelterId,
+        mstEdges.isEmpty() ? null : mstEdges.get(0).getFromLocationName(),
+        mstEdges,
+        allShelterIds.size(),
+        totalDistance
+    );
+}
+
+    private void addShelterEdgesToQueue(String currentId, List<MSTEdgeData> allEdges,
+                                        Set<String> visited, PriorityQueue<MSTEdgeData> queue) {
+        for (MSTEdgeData e : allEdges) {
+            // Verificar conexiones donde el currentId es origen
+            if (e.getSourceId().equals(currentId) && !visited.contains(e.getDestinationId())) {
+                queue.offer(e);
+            }
+            // Verificar conexiones donde el currentId es destino (crear arista inversa)
+            if (e.getDestinationId().equals(currentId) && !visited.contains(e.getSourceId())) {
+                queue.offer(new MSTEdgeData(
+                    e.getDestinationId(),
+                    e.getDestinationName(),
+                    e.getSourceId(),
+                    e.getSourceName(),
+                    e.getDistance()
                 ));
             }
         }
-    }
-
-    /**
+    }    /**
      * Clase interna para manejar datos de aristas en la cola de prioridad
      */
-    private static class MSTEdgeData {
+    @QueryResult
+    public static class MSTEdgeData {
         private String sourceId;
         private String sourceName;
         private String destinationId;
         private String destinationName;
         private double distance;
+
+        public MSTEdgeData() {}
 
         public MSTEdgeData(String sourceId, String sourceName, String destinationId, 
                             String destinationName, double distance) {
@@ -129,9 +126,20 @@ public class GraphService {
         public String getDestinationId() {
             return destinationId;
         }
+        public String getDestinationName() {
+            return destinationName;
+        }
 
         public double getDistance() {
             return distance;
+        }
+
+        public String getSourceId() {
+            return sourceId;
+        }
+
+        public String getSourceName() {
+            return sourceName;
         }
 
         public MSTEdgeResponse toResponse() {

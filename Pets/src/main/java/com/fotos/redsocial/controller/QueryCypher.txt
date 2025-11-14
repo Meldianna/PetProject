@@ -1,0 +1,141 @@
+// --- FASE 1: Creación/Búsqueda de todos los nodos ---
+
+// MERGE Species
+MERGE (dog:Specie {id: "1"}) 
+  ON CREATE SET dog.name = 'Dog', dog.description = 'Canine companion'
+MERGE (cat:Specie {id: "2"}) 
+  ON CREATE SET cat.name = 'Cat', cat.description = 'Feline companion'
+
+// MERGE Traits
+MERGE (friendly:Trait {id: "1"}) 
+  ON CREATE SET friendly.name = 'Friendly', friendly.description = 'Good with people'
+MERGE (playful:Trait {id: "2"}) 
+  ON CREATE SET playful.name = 'Playful', playful.description = 'Energetic and fun'
+
+// MERGE Locations
+MERGE (loc1:Location {id: "1"}) 
+  ON CREATE SET loc1.name = 'Downtown', loc1.address = '123 Main St'
+MERGE (loc2:Location {id: "2"}) 
+  ON CREATE SET loc2.name = 'Uptown', loc2.address = '456 Park Ave'
+MERGE (loc3:Location {id: "3"}) 
+  ON CREATE SET loc3.name = 'Suburbs', loc3.address = '789 Oak Rd'
+
+// MERGE Events
+MERGE (event1:Event {id:"e1"}) 
+  ON CREATE SET event1.name = 'Feria de vacunación', event1.date = datetime(), event1.animalEachShelter = 3, event1.volunteersNeeded = 3
+MERGE (event2:Event {id:"e2"}) 
+  ON CREATE SET event2.name = 'Paseos y juegos', event2.date = datetime(), event2.animalEachShelter = 2, event2.volunteersNeeded = 10
+MERGE (event3:Event {id:"e3"}) 
+  ON CREATE SET event3.name = 'Feria de adopcion', event3.date = datetime(), event3.animalEachShelter = 1, event3.volunteersNeeded = 8
+MERGE (event4:Event {id:"e4"}) 
+  ON CREATE SET event4.name = 'AnimaLooza', event4.date = datetime(), event4.animalEachShelter = 1, event4.volunteersNeeded = 1
+
+
+// MERGE Shelters
+MERGE (shelter1:Shelter {id: "1"}) 
+  ON CREATE SET shelter1.name = 'Happy Paws', shelter1.capacity = 50
+MERGE (shelter2:Shelter {id: "2"}) 
+  ON CREATE SET shelter2.name = 'Safe Haven', shelter2.capacity = 30
+MERGE (shelter3:Shelter {id: "3"}) 
+  ON CREATE SET shelter3.name = 'Pet Paradise', shelter3.capacity = 40
+
+// MERGE Users
+MERGE (user1:User {id: "1"}) 
+  ON CREATE SET user1.name = 'John Doe', user1.email = 'john@example.com'
+MERGE (user2:User {id: "2"}) 
+  ON CREATE SET user2.name = 'Jane Smith', user2.email = 'jane@example.com'
+MERGE (user3:User {id: "3"}) 
+  ON CREATE SET user3.name = 'Bob Wilson', user3.email = 'bob@example.com'
+  MERGE (user4:User {id: "4"}) 
+  ON CREATE SET user4.name = 'Karla Potts', user4.email = 'karla@example.com'
+
+// MERGE Animals
+MERGE (pet1:Animal {id: "1"}) 
+  ON CREATE SET pet1.name = 'Max', pet1.age = 3, pet1.status = 'AVAILABLE'
+MERGE (pet2:Animal {id: "2"}) 
+  ON CREATE SET pet2.name = 'Luna', pet2.age = 2, pet2.status = 'AVAILABLE'
+MERGE (pet3:Animal {id: "3"}) 
+  ON CREATE SET pet3.name = 'Rocky', pet3.age = 4, pet3.status = 'AVAILABLE'
+MERGE (pet4:Animal {id: "4"}) 
+  ON CREATE SET pet4.name = 'Bella', pet4.age = 1, pet4.status = 'AVAILABLE'
+
+// --- FASE 2: Pasar todas las variables de nodos a la creación de relaciones ---
+WITH dog, cat, friendly, playful, loc1, loc2, loc3, event1, event2, event3, event4, shelter1, shelter2, shelter3, user1, user2, user3, pet1, pet2, pet3, pet4
+
+// --- FASE 3: Creación/Búsqueda de todas las relaciones ---
+//Friends Connections
+MERGE (user1)-[:FRIENDS_WITH]->(user2)
+MERGE (user1)<-[:FRIENDS_WITH]-(user2)
+MERGE (user2)-[:FRIENDS_WITH]->(user3)
+MERGE (user2)<-[:FRIENDS_WITH]-(user3)
+MERGE (user3)-[:FRIENDS_WITH]->(user1)
+MERGE (user3)<-[:FRIENDS_WITH]-(user1)
+MERGE (user4)<-[:FRIENDS_WITH]-(user2)
+MERGE (user4)-[:FRIENDS_WITH]->(user2)
+
+
+
+// Location Connections (Bidireccionales)
+MERGE (loc1)-[c1:CONNECTS]->(loc2) ON CREATE SET c1.distance = 5.0
+MERGE (loc2)-[c2:CONNECTS]->(loc1) ON CREATE SET c2.distance = 5.0
+MERGE (loc2)-[c3:CONNECTS]->(loc3) ON CREATE SET c3.distance = 3.0
+MERGE (loc3)-[c4:CONNECTS]->(loc2) ON CREATE SET c4.distance = 3.0
+MERGE (loc1)-[c5:CONNECTS]->(loc3) ON CREATE SET c5.distance = 7.0
+MERGE (loc3)-[c6:CONNECTS]->(loc1) ON CREATE SET c6.distance = 7.0
+
+// Shelter-Animal (HOUSES)
+MERGE (shelter1)-[:HOUSES]->(pet1)
+MERGE (shelter2)-[:HOUSES]->(pet2)
+MERGE (shelter3)-[:HOUSES]->(pet3)
+MERGE (shelter1)-[:HOUSES]->(pet4)
+
+// Animal-Specie (IS_OF_SPECIES)
+MERGE (pet1)-[:IS_OF_SPECIES]->(dog)
+MERGE (pet2)-[:IS_OF_SPECIES]->(cat)
+MERGE (pet3)-[:IS_OF_SPECIES]->(dog)
+MERGE (pet4)-[:IS_OF_SPECIES]->(cat)
+
+// Animal-Trait (HAS_TRAIT)
+MERGE (pet1)-[:HAS_TRAIT]->(friendly)
+MERGE (pet1)-[:HAS_TRAIT]->(playful)
+MERGE (pet2)-[:HAS_TRAIT]->(friendly)
+MERGE (pet3)-[:HAS_TRAIT]->(playful)
+MERGE (pet4)-[:HAS_TRAIT]->(friendly)
+
+// Shelter-Location (LOCATED_AT)
+MERGE (shelter1)-[:LOCATED_AT]->(loc1)
+MERGE (shelter2)-[:LOCATED_AT]->(loc2)
+MERGE (shelter3)-[:LOCATED_AT]->(loc3)
+
+// Event-Location (TAKES_PLACE_IN)
+MERGE (event1)-[:TAKES_PLACE_IN]->(loc1)
+MERGE (event2)-[:TAKES_PLACE_IN]->(loc2)
+MERGE (event3)-[:TAKES_PLACE_IN]->(loc3)
+MERGE (event4)-[:TAKES_PLACE_IN]->(loc2)
+
+// User Preferences
+MERGE (user1)-[:LOOKS_FOR]->(dog)
+MERGE (user2)-[:LOOKS_FOR]->(cat)
+MERGE (user3)-[:LOOKS_FOR]->(dog) // Nota: Normalizado de :LOOKS a :LOOKS_FOR por consistencia
+MERGE (user1)-[:PREFERS]->(friendly)
+MERGE (user2)-[:PREFERS]->(playful)
+
+// User-Animal Relationships (Adopción, Cuidado)
+MERGE (user1)-[care1:TAKES_CARE_OF]->(pet1) 
+  ON CREATE SET care1.since = datetime()
+MERGE (user2)-[fost1:FOSTERS]->(pet2) 
+  ON CREATE SET fost1.startDate = datetime(), fost1.endDate = datetime() + duration('P30D')
+MERGE (user3)-[care2:TAKES_CARE_OF]->(pet3) 
+  ON CREATE SET care2.since = datetime()
+MERGE (user1)-[adop1:ADOPTS]->(pet4) 
+  ON CREATE SET adop1.startDate = datetime()
+
+// Actualizar estado del animal adoptado (manejado en la misma consulta)
+SET pet4.status = 'ADOPTED'
+
+// User-Shelter (WORKS_FOR)
+MERGE (user1)-[:WORKS_IN]->(shelter3)
+MERGE (user2)-[:WORKS_IN]->(shelter1)
+MERGE (user2)-[:WORKS_IN]->(shelter3)
+MERGE (user3)-[:WORKS_IN]->(shelter1)
+MERGE (user3)-[:WORKS_IN]->(shelter2);

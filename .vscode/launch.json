@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-PetsApplication<redsocial>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.fotos.redsocial.PetsApplication",
+            "projectName": "redsocial",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

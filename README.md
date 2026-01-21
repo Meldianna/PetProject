@@ -44,8 +44,7 @@ Con Neo4j, modelamos el dominio como un grafo:
 | Algoritmo | Propósito en "Pets" | Servicio |
 | :--- | :--- | :--- |
 | **Dijkstra** | **Logística**: Encuentra la ruta más corta (menor distancia) entre dos ubicaciones geográficas. Ideal para coordinar transportes de animales. | `DijkstraService` |
-| **Greedy (Voraz)** | **Matching Inteligente**: Asigna mascotas a usuarios priorizando a los usuarios con menos opciones (según su compatibilidad con los animales disponibles) y luego buscando la mejor compatibilidad local.
- * Esto puede ser utilizado para analizar la probabilidad de adopción o apadrinamiento de todos los animales en cualquier refugio. | `GreedyMatchingService` |
+| **Greedy (Voraz)** | **Matching Inteligente**: Asigna mascotas a usuarios priorizando a los usuarios con menos opciones (según su compatibilidad con los animales disponibles) y luego buscando la mejor compatibilidad local. Esto puede ser utilizado para analizar la probabilidad de adopción o apadrinamiento de todos los animales en cualquier refugio. | `GreedyMatchingService` |
 | **BFS (Breadth-First Search)** | **Red Social**: Calcula los grados de separación entre un usuario y un animal. Ayuda a recomendar posibles adopciones a través de su red de amigos. | `BFSService` |
 | **DFS (Depth-First Search)** | **Exploración**: Busca caminos exploratorios entre ubicaciones sin necesariamente buscar el óptimo, útil para descubrir rutas alternativas. | `DFSService` |
 | **Prim (MST)** | **Infraestructura**: Calcula el Árbol de Expansión Mínima para conectar un conjunto de ubicaciones con el menor costo posible (ej. cableado de red entre refugios o rutas de distribución de suministros). | `PrimService` |

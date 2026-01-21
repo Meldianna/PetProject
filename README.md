@@ -1,6 +1,6 @@
-# Pets - Sistema de Adopción Inteligente con Neo4j
+# PetProject
 
-**Pets** es una plataforma social  optimizada para la gestión eficiente de adopciones de mascotas, refugios y eventos. Este proyecto académico busca demostrar la aplicación práctica de estructuras de datos avanzadas y algoritmos complejos en casos reales, como el de adopción de mascotas.
+**Pets** es una plataforma social  optimizada para la gestión eficiente de adopciones de mascotas, refugios y eventos. Este proyecto académico busca demostrar la aplicación práctica de estructuras de datos avanzadas y algoritmos complejos en casos reales, como el de la adopción de mascotas.
 
 
 ## 🎓 Contexto Académico
@@ -9,7 +9,7 @@ Este proyecto fue desarrollado como un trabajo académico enfocado en la materia
 
 ## 💡 Caso de Uso
 
-El problema central que resuelve **Pets** es la desconexión entre los animales que necesitan hogar, los refugios que los albergan y los posibles adoptantes. Hemos identificado que actualmente la adopción de mascotas es un proceso lento, donde las personas no encuentran fácilemente un animal que cumpla con sus preferencias, o mismo que los refugios no son reconocidos por la comunidad, lo que usualmente desemboca en la finalización de la actividad de muchos refugios. 
+El problema central que resuelve **Pets** es la desconexión entre los animales que necesitan hogar, los refugios que los albergan y los posibles adoptantes. Hemos identificado que actualmente la adopción de mascotas es un proceso lento, donde las personas no encuentran fácilmente un animal que cumpla con sus preferencias, o incluso que los refugios no son reconocidos por la comunidad, lo que usualmente desemboca en la finalización de la actividad de muchos refugios. 
 
 Por esto, creamos Pets. 
 
@@ -25,7 +25,7 @@ El sistema funciona como una **Red Social** donde:
 *   **Neo4j**: Base de datos orientada a grafos. Se eligió por su capacidad nativa para modelar y consultar relaciones complejas (amigos, dueños, refugios, interacciones).
 *   **Spring Data Neo4j**: Abstracción para interactuar con la base de datos de grafos.
 *   **Lombok**: Para reducir el código boilerplate.
-*   **MapStruct**: Para el mapeo eficiente entre Entidades y DTOs.
+*   **MapStruct**: Para el mapeo eficiente entre entidades y DTOs.
 
 
 ## 🏗️ Arquitectura y Lógica del Sistema
@@ -36,7 +36,7 @@ En un sistema de adopción y social, las **relaciones** son tan importantes como
 
 Con Neo4j, modelamos el dominio como un grafo:
 *   **Nodos**: `User`, `Animal`, `Shelter`, `Location`, `Event`, `Specie`, `Trait`.
-*   **Relaciones**: `:ADOPTS`, `:FOSTERS`, `:TAKES_CARE_OF` `:FRIENDS_WITH`, `:HOUSES`, `:HAS_TRAIT`, `:IS_OF_SPECIES`, `:CONNECTS`, `:LOCATED_IN`, `:TAKES_PLACE_IN`, `:PREFERS`, `:LOOKS_FOR`, `:WORKS_IN`
+*   **Relaciones**: `:ADOPTS`, `:FOSTERS`, `:TAKES_CARE_OF`, `:FRIENDS_WITH`, `:HOUSES`, `:HAS_TRAIT`, `:IS_OF_SPECIES`, `:CONNECTS`, `:LOCATED_IN`, `:TAKES_PLACE_IN`, `:PREFERS`, `:LOOKS_FOR`, `:WORKS_IN.`
 
 ### Algoritmos Implementados
 
@@ -50,7 +50,7 @@ Con Neo4j, modelamos el dominio como un grafo:
 | **Prim (MST)** | **Infraestructura**: Calcula el Árbol de Expansión Mínima para conectar un conjunto de ubicaciones con el menor costo posible (ej. cableado de red entre refugios o rutas de distribución de suministros). | `PrimService` |
 | **QuickSort** | **Organización**: Ordena eficientemente los refugios basándose en su capacidad, permitiendo redistribuir los animales entre los refugios de manera eficiente para optimizar el espacio total disponible. | `QuickSortService` |
 | **Dynamic Programming** | **Optimización de Eventos**: Maximiza la inscripción a eventos de adopción dado un presupuesto o capacidad limitada, resolviendo un problema tipo "Knapsack". | `DynamicProgrammingService` |
-| **Backtracking** | **Exploración Exhaustiva**: Genera todas las combinaciones posibles de adopción para un usuario según sus preferencias, explorando el espacio de soluciones completo para decisiones complejas. | `BacktrackingService` |
+| **Backtracking** | **Exploración exhaustiva**: Genera todas las combinaciones posibles de adopción para un usuario según sus preferencias, explorando el espacio de soluciones completo para decisiones complejas. | `BacktrackingService` |
 | **Branch & Bound** | **Rutas de Visita**: Encuentra la ruta óptima para que un usuario visite los animales que apadrina, optimizando tiempo y distancia. | `BranchAndBoundService` |
 
 ## 🚀 Funcionalidades Principales (API)
@@ -77,4 +77,4 @@ La API REST expone los algoritmos a través del controlador `AlgoritmosControlle
 *   **Neo4j Database**: Puedes usar Neo4j Desktop o una imagen de Docker.
 
 ### Configuración
-Asegúrate de configurar las credenciales de tu base de datos el archivo *application.properties*.
+Asegúrate de configurar las credenciales de tu base de datos en el archivo *application.properties*.

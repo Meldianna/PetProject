@@ -1,7 +1,6 @@
-# PetProject
-## Sistema de Adopción Inteligente con Neo4j
+# Pets - Sistema de Adopción Inteligente con Neo4j
 
-**Pets** es una plataforma social  optimizada para la gestión eficiente de adopciones de mascotas, refugios y eventos. Este proyecto académico busca demostrar la aplicación práctica de estructuras de datos avanzadas y algoritmos complejos en casos reales, como el de la adopción de mascotas.
+**Pets** es una plataforma social  optimizada para la gestión eficiente de adopciones de mascotas, refugios y eventos. Este proyecto académico busca demostrar la aplicación práctica de estructuras de datos avanzadas y algoritmos complejos en casos reales, como el de adopción de mascotas.
 
 
 ## 🎓 Contexto Académico
@@ -10,7 +9,7 @@ Este proyecto fue desarrollado como un trabajo académico enfocado en la materia
 
 ## 💡 Caso de Uso
 
-El problema central que resuelve **Pets** es la desconexión entre los animales que necesitan hogar, los refugios que los albergan y los posibles adoptantes. Hemos identificado que actualmente la adopción de mascotas es un proceso lento, donde las personas no encuentran fácilmente un animal que cumpla con sus preferencias, o incluso que los refugios no son reconocidos por la comunidad, lo que usualmente desemboca en la finalización de la actividad de muchos refugios. 
+El problema central que resuelve **Pets** es la desconexión entre los animales que necesitan hogar, los refugios que los albergan y los posibles adoptantes. Hemos identificado que actualmente la adopción de mascotas es un proceso lento, donde las personas no encuentran fácilemente un animal que cumpla con sus preferencias, o mismo que los refugios no son reconocidos por la comunidad, lo que usualmente desemboca en la finalización de la actividad de muchos refugios. 
 
 Por esto, creamos Pets. 
 
@@ -44,10 +43,11 @@ Con Neo4j, modelamos el dominio como un grafo:
 | Algoritmo | Propósito en "Pets" | Servicio |
 | :--- | :--- | :--- |
 | **Dijkstra** | **Logística**: Encuentra la ruta más corta (menor distancia) entre dos ubicaciones geográficas. Ideal para coordinar transportes de animales. | `DijkstraService` |
-| **Greedy (Voraz)** | **Matching Inteligente**: Asigna mascotas a usuarios priorizando a los usuarios con menos opciones (según su compatibilidad con los animales disponibles) y luego buscando la mejor compatibilidad local. Esto puede ser utilizado para analizar la probabilidad de adopción o apadrinamiento de todos los animales en cualquier refugio. | `GreedyMatchingService` |
-| **BFS (Breadth-First Search)** | **Red Social**: Calcula los grados de separación entre un usuario y un animal. Ayuda a mostrar qué tan conectado está un usuario con un animal. Se traduce a casos donde los usuarios quieren adoptar o apadrinar un animal, pero prefieren tener referencias de aquel animal. | `BFSService` |
+| **Greedy (Voraz)** | **Matching Inteligente**: Asigna mascotas a usuarios priorizando a los usuarios con menos opciones (según su compatibilidad con los animales disponibles) y luego buscando la mejor compatibilidad local.
+ * Esto puede ser utilizado para analizar la probabilidad de adopción o apadrinamiento de todos los animales en cualquier refugio. | `GreedyMatchingService` |
+| **BFS (Breadth-First Search)** | **Red Social**: Calcula los grados de separación entre un usuario y un animal. Ayuda a recomendar posibles adopciones a través de su red de amigos. | `BFSService` |
 | **DFS (Depth-First Search)** | **Exploración**: Busca caminos exploratorios entre ubicaciones sin necesariamente buscar el óptimo, útil para descubrir rutas alternativas. | `DFSService` |
-| **Prim (MST)** | **Infraestructura**: Calcula el Árbol de Expansión Mínima para conectar un conjunto de ubicaciones con el menor costo posible (ej. para un posible recorrido de veterinarios, voluntarios o incluso transporte de alimento). | `PrimService` |
+| **Prim (MST)** | **Infraestructura**: Calcula el Árbol de Expansión Mínima para conectar un conjunto de ubicaciones con el menor costo posible (ej. cableado de red entre refugios o rutas de distribución de suministros). | `PrimService` |
 | **QuickSort** | **Organización**: Ordena eficientemente los refugios basándose en su capacidad, permitiendo redistribuir los animales entre los refugios de manera eficiente para optimizar el espacio total disponible. | `QuickSortService` |
 | **Dynamic Programming** | **Optimización de Eventos**: Maximiza la inscripción a eventos de adopción dado un presupuesto o capacidad limitada, resolviendo un problema tipo "Knapsack". | `DynamicProgrammingService` |
 | **Backtracking** | **Exploración Exhaustiva**: Genera todas las combinaciones posibles de adopción para un usuario según sus preferencias, explorando el espacio de soluciones completo para decisiones complejas. | `BacktrackingService` |
@@ -64,7 +64,7 @@ La API REST expone los algoritmos a través del controlador `AlgoritmosControlle
 | `GET` | `/api/algoritmos/dijkstra/{startId}/{endId}` | Camino más corto (Dijkstra) entre dos ubicaciones. |
 | `GET` | `/api/algoritmos/mst` | Obtiene el MST de las ubicaciones (Prim). |
 | `GET` | `/api/algoritmos/greedy/match-pets` | Ejecuta el algoritmo de matching masivo (Pet-User). |
-| `GET` | `/api/algoritmos/sort/shelters` | Lista de refugios ordenados por capacidad (QuickSort). |
+| `GET` | `/api/algoritmos/sort/shelters` | Lista refugios ordenados por capacidad (QuickSort). |
 | `GET` | `/api/algoritmos/dynamic/optimize` | Optimiza asistencia a eventos (Dynamic Prog). |
 | `GET` | `/api/algoritmos/backtrack/adoption-options/{userId}` | Opciones de adopción exhaustivas. |
 | `GET` | `/api/algoritmos/branch-bound/route/{startId}/{userEmail}` | Ruta óptima de visita de refugios. |
@@ -77,4 +77,4 @@ La API REST expone los algoritmos a través del controlador `AlgoritmosControlle
 *   **Neo4j Database**: Puedes usar Neo4j Desktop o una imagen de Docker.
 
 ### Configuración
-Asegúrate de configurar las credenciales de tu base de datos en el archivo *application.properties*.
+Asegúrate de configurar las credenciales de tu base de datos el archivo *application.properties*.

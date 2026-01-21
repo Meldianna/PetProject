@@ -26,7 +26,6 @@ El sistema funciona como una **Red social** donde:
 *   **Neo4j**: base de datos orientada a grafos. Se eligió por su capacidad nativa para modelar y consultar relaciones complejas (amigos, dueños, refugios, interacciones).
 *   **Spring Data Neo4j**: Abstracción para interactuar con la base de datos de grafos.
 *   **Lombok**: Para reducir el código boilerplate.
-*   **MapStruct**: Para el mapeo eficiente entre entidades y DTOs.
 
 
 ## 🏗️ Arquitectura y Lógica del Sistema

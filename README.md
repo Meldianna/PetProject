@@ -66,12 +66,9 @@ La API REST expone los algoritmos a través del controlador `AlgoritmosControlle
 | `GET` | `/api/algoritmos/backtrack/adoption-options/{userId}` | Opciones de adopción exhaustivas. |
 | `GET` | `/api/algoritmos/branch-bound/route/{startId}/{userEmail}` | Ruta óptima de visita de refugios. |
 
-## 📦 Instalación y Ejecución
 
 ### Requisitos Previos
 *   **Java 21** instalado.
 *   **Maven** instalado.
-*   **Neo4j Database**: Puedes usar Neo4j Desktop o una imagen de Docker.
+*   **Neo4j Database**.
 
-### Configuración
-Asegúrate de configurar las credenciales de tu base de datos en el archivo *application.properties*.

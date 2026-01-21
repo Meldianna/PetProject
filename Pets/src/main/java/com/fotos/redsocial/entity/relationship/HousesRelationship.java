@@ -10,14 +10,18 @@ import org.springframework.data.neo4j.core.schema.TargetNode;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fotos.redsocial.entity.Animal;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @RelationshipProperties
 @JsonIgnoreProperties({"shelter", "animal"})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true) 
+@EqualsAndHashCode(onlyExplicitlyIncluded = true) //Excluye @TargetNode (animal) para evitar bucles infinitos
 @ToString(onlyExplicitlyIncluded = true)
 public class HousesRelationship {
 

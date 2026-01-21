@@ -1,6 +1,5 @@
 package com.fotos.redsocial.entity;
 
-
 import java.util.List;
 
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
@@ -12,17 +11,21 @@ import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Node
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(onlyExplicitlyIncluded = true)
 public class Trait {
 
-    @Id @GeneratedValue(UUIDStringGenerator.class)
+    @Id
+    @GeneratedValue(UUIDStringGenerator.class)
+    @ToString.Include
     private String id;
 
-    //private String name;
+    @ToString.Include
     private String description;
 
     // Species -> HAS_TRAIT -> Trait (incoming)
@@ -33,7 +36,7 @@ public class Trait {
     @Relationship(type = "PREFERS", direction = Relationship.Direction.INCOMING)
     private List<User> preferredBy;
 
-    public Trait(String desc){
+    public Trait(String desc) {
         this.description = desc;
 
     }

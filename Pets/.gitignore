@@ -31,7 +31,13 @@ build/
 
 ### VS Code ###
 .vscode/
-.pom.xml
 __MACOSX/
-.src/main/resources/application.properties
+src/main/resources/application.properties
 .vscode
+code/node_modules/
+code/dist/
+code/.env*
+!code/.env.example
+.DS_Store
+*.log
+logs/

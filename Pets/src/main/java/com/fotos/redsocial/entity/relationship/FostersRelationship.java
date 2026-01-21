@@ -5,7 +5,6 @@ import java.time.LocalDate;
 
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
-
 import org.springframework.data.neo4j.core.schema.TargetNode;
 
 import com.fotos.redsocial.entity.Animal;
@@ -13,10 +12,8 @@ import com.fotos.redsocial.entity.Animal;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true) 
 @ToString(onlyExplicitlyIncluded = true) 
 @Data
 @NoArgsConstructor
@@ -25,8 +22,10 @@ public class FostersRelationship {
     
     @Id 
     @GeneratedValue
+    @ToString.Include
     private String id;
 
+    @ToString.Include
     private LocalDate fosteredSince;
 
     @TargetNode

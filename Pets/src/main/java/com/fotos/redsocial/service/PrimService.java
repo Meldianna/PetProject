@@ -44,13 +44,11 @@ public class PrimService {
     private LocationRepository locationRepository;
 
     public MSTResponse getMinimumSpanningTree() {
-        // --- FASE 1: INICIALIZACIÓN ---
-
-        // 1. `mstEdges`: Lista para guardar las aristas que formarán el MST final.
+        // "mstEdges": Lista para guardar las aristas que formarán el MST final.
         List<MSTEdgeResponse> mstEdges = new ArrayList<>();
-        // 2. `visited`: Conjunto para registrar los nodos que ya forman parte del MST.
+        //"visited": Conjunto para registrar los nodos que ya forman parte del MST.
         Set<String> visited = new HashSet<>();
-        // 3. `pq`: Cola de prioridad para almacenar las aristas candidatas, ordenadas por peso (distancia).
+        //"pq": Cola de prioridad para almacenar las aristas candidatas, ordenadas por peso (distancia).
         PriorityQueue<Edge> pq = new PriorityQueue<>(Comparator.comparingDouble(Edge::getWeight));
 
         List<Location> allLocations = locationRepository.findAll();
@@ -58,44 +56,37 @@ public class PrimService {
             return new MSTResponse(mstEdges);
         }
 
-        // 4. Elegir una ubicación de inicio arbitraria para comenzar a construir el MST.
+        //Elegir una ubicación de inicio arbitraria para comenzar a construir el MST.
         Location start = allLocations.get(0);
         visited.add(start.getId());
 
 
-        // --- FASE 2: AÑADIR ARISTAS DEL NODO INICIAL ---
-        // 5. Añadir todas las aristas del nodo inicial a la cola de prioridad.
-        // Estas son las primeras aristas candidatas para formar el MST.
         for (ConnectConnection conn : start.getConnections()) {
             pq.offer(new Edge(start.getId(), conn.getDestination().getId(), conn.getDistance()));
         }
 
 
-        // --- FASE 3: BUCLE PRINCIPAL (CRECIMIENTO DEL MST) ---
         // El bucle se ejecuta hasta que hayamos incluido todos los nodos en el MST.
         while (!pq.isEmpty() && visited.size() < allLocations.size()) {
-            // 6. Extraer la arista con el menor peso (la más prometedora).
+            //Extraer la arista con el menor peso.
             Edge edge = pq.poll();
             String destinationId = edge.getDestination();
 
-            // 7. Evitar ciclos: Si el nodo destino de la arista ya está en el MST, la ignoramos.
+            //si el nodo destino ya está en el MST, ignorar.
             if (visited.contains(destinationId)) {
                 continue;
             }
 
-            // --- FASE 4: EXPANSIÓN DEL MST ---
-            // 8. La arista es válida: la añadimos al MST.
+            // La arista es válida: la añadimos al MST.
             mstEdges.add(new MSTEdgeResponse(edge.getSource(), destinationId, edge.getWeight()));
             
-            // 9. Marcar el nodo destino como visitado, añadiéndolo al conjunto del MST.
             visited.add(destinationId);
 
-            // 10. Obtener el nodo que acabamos de añadir.
+            //Obtener el nodo que acabamos de añadir.
             Location newVertex = locationRepository.findById(destinationId)
                 .orElseThrow(() -> new RuntimeException("Location not found"));
 
-            // 11. Añadir las aristas del nuevo nodo a la cola de prioridad, siempre que
-            // no conecten a un nodo que ya está en el MST.
+        
             for (ConnectConnection conn : newVertex.getConnections()) {
                 if (!visited.contains(conn.getDestination().getId())) {
                     pq.offer(new Edge(newVertex.getId(), conn.getDestination().getId(), conn.getDistance()));
@@ -103,7 +94,7 @@ public class PrimService {
             }
         }
         
-        // 12. Retornar la lista de aristas que componen el MST.
+        // Retornar la lista de aristas que componen el MST.
         return new MSTResponse(mstEdges);
     }
 }

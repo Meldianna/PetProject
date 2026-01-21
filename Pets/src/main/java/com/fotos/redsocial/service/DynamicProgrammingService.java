@@ -46,15 +46,14 @@ public class DynamicProgrammingService {
     
     @Transactional(readOnly = true)
     public List<EventDTO> optimizeEventEnrollment(String shelterId) {
-        // --- FASE 1: OBTENCIÓN Y VALIDACIÓN DE DATOS ---
 
-        // 1. Obtener los recursos del refugio: animales y voluntarios disponibles.
+        // Obtener los recursos del refugio: animales y voluntarios disponibles.
         Shelter shelter = shelterRepository.findById(shelterId)
             .orElseThrow(() -> new RuntimeException("Refugio no encontrado con id: " + shelterId));
         int maxAnimals = shelterRepository.countAnimalsForShelter(shelterId);
         int maxVolunteers = shelterRepository.countVolunteersForShelter(shelterId);
         
-        // 2. Obtener los "ítems" disponibles: eventos cercanos.
+        // Obtener los "ítems" disponibles: eventos cercanos.
         List<EventDTO> nearbyEvents = eventRepository.findNearbyEventsForShelter(shelterId).stream()
             .map(e -> new EventDTO(e.getId(), e.getName(), e.getDate(), e.getAnimalEachShelter(), e.getVolunteersNeeded()))
             .collect(Collectors.toList());
@@ -62,9 +61,7 @@ public class DynamicProgrammingService {
         int n = nearbyEvents.size();
         if (n == 0) return new ArrayList<>();
 
-        // --- FASE 2: CONSTRUCCIÓN DE LA TABLA DE DP ---
-
-        // 3. Crear la tabla de DP. dp[i][j][k] representará la solución óptima
+        // Crear la tabla de DP. dp[i][j][k] representará la solución óptima
         // para los primeros `i` eventos, con `j` voluntarios y `k` animales.
         int[][][] dp = new int[n + 1][maxVolunteers + 1][maxAnimals + 1];
 
@@ -94,8 +91,7 @@ public class DynamicProgrammingService {
             }
         }
         
-        // --- FASE 3: RECONSTRUCCIÓN DE LA SOLUCIÓN ---
-        // Ahora, recorrer la tabla de DP hacia atrás para descubrir qué eventos fueron seleccionados.
+        // Recorrer la tabla de DP hacia atrás para descubrir qué eventos fueron seleccionados.
         List<EventDTO> chosenEvents = new ArrayList<>();
         int i = n, v = maxVolunteers, a = maxAnimals;
         while (i > 0 && v >= 0 && a >= 0) {

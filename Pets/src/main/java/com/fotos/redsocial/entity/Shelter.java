@@ -62,8 +62,6 @@ public class Shelter {
     @Relationship(type = "FOLLOWS", direction = Relationship.Direction.INCOMING)
     private List<User> followers;
 
-    //by default, the animal has these principal characteristics.
-    //users and animals are set later
     public Shelter(String name, String address, Location location){
         this.name = name;
         this.address = address;

@@ -51,20 +51,19 @@ public class BranchAndBoundService {
     private LocationRepository locationRepository;
 
     public PathResponse findOptimalShelterRoute(String startId, String userEmail) {
-        // --- FASE 1: PREPARACIÓN ---
 
-        // 1. Obtener los nodos clave: inicio y objetivos.
+        //Obtener los nodos clave: inicio y objetivos.
         Location startNode = locationRepository.findById(startId)
             .orElseThrow(() -> new RuntimeException("Location not found"));
         // Las ubicaciones objetivo ahora son personalizadas para el usuario.
         List<Location> targetLocations = locationRepository.findTargetLocationsForUser(userEmail);
 
-        // 2. `bestRoute` y `bestCost`: Almacenarán la mejor ruta cíclica encontrada
-        // y su coste total. Se usa un array para que `bestCost` sea mutable en la recursión.
+        // "bestRoute" y "bestCost": Almacenarán la mejor ruta cíclica encontrada
+        // y su coste total. Se usa un array para que "bestCost" sea mutable en la recursión.
         List<Location> bestRoute = new ArrayList<>();
         double[] bestCost = { Double.MAX_VALUE };
 
-        // 3. Crear un conjunto con los IDs de los objetivos para una verificación rápida (O(1)).
+        // Crear un conjunto con los IDs de los objetivos para una verificación rápida (O(1)).
         Set<String> targetIds = targetLocations.stream()
             .map(Location::getId)
             .filter(Objects::nonNull)
@@ -73,9 +72,7 @@ public class BranchAndBoundService {
         targetIds.add(startId);
 
 
-        // --- FASE 2: INICIO DEL ALGORITMO ---
-
-        // 4. Iniciar el proceso recursivo de ramificación y poda desde el nodo de inicio.
+        // Iniciar el proceso recursivo de ramificación y poda desde el nodo de inicio.
         branchAndBound(
             startNode,                             // Nodo actual
             new ArrayList<>(List.of(startNode)), // Camino actual
@@ -87,9 +84,8 @@ public class BranchAndBoundService {
             startNode                            // Nodo inicial (para calcular el regreso)
         );
         
-        // --- FASE 3: FORMATEO DE LA RESPUESTA ---
 
-        // 5. Convertir la ruta óptima encontrada a una lista de DTOs para la respuesta.
+        //Convertir la ruta óptima encontrada a una lista de DTOs para la respuesta.
         List<LocationDTO> locationDTOs = bestRoute.stream()
             .map(loc -> new LocationDTO(loc.getId(), loc.getName(), loc.getAddress()))
             .collect(Collectors.toList());
@@ -100,16 +96,14 @@ public class BranchAndBoundService {
     private void branchAndBound(Location current, List<Location> currentPath, Set<String> visited, double currentCost,
                                 Set<String> targetIds, List<Location> bestPath, double[] bestCost, Location startNode) {
 
-        // --- PODA POR COSTE (BOUND) ---
-        // 1. Si el coste del camino que estamos construyendo ya es peor que la mejor
-        // solución completa que hemos encontrado, no hay razón para continuar.
-        // Esta es la optimización clave que poda el árbol de búsqueda.
+        // --- PODA ---
+        // Si el coste del camino que estamos construyendo ya es peor que la mejor
+        // solución completa que hemos encontrado, se descarta esta rama. 
         if (currentCost >= bestCost[0]) {
             return;
         }
 
-        // --- CONDICIÓN DE ÉXITO: RUTA COMPLETA ---
-        // 2. Si hemos visitado todos los nodos objetivo.
+        // --- "CASO DE ÉXITO" ---
         if (visited.containsAll(targetIds)) {
             // Para completar el ciclo, calculamos el coste de regresar al inicio.
             Double returnCost = locationRepository.getDistanceBetween(current.getId(), startNode.getId());
@@ -129,8 +123,8 @@ public class BranchAndBoundService {
             return; // Fin de esta rama de exploración.
         }
 
-        // --- RAMIFICACIÓN (BRANCH) ---
-        // 3. Explorar todos los vecinos del nodo actual.
+        // --- RAMIFICACIÓN ---
+        // Explorar todos los vecinos del nodo actual.
         List<ConnectConnection> connections = current.getConnections();
         if (connections == null) return;
 
@@ -141,15 +135,14 @@ public class BranchAndBoundService {
             // Evitar ciclos dentro del camino (no visitar el mismo nodo dos veces).
             if (!visited.contains(next.getId())) {
                 
-                // 4. ACCIÓN: Extender la ruta actual, añadiendo el siguiente nodo.
+                // Extender la ruta actual, añadiendo el siguiente nodo.
                 visited.add(next.getId());
                 currentPath.add(next);
 
-                // 5. LLAMADA RECURSIVA: Continuar la búsqueda desde el nuevo nodo.
+                // Continuar la búsqueda desde el nuevo nodo.
                 branchAndBound(next, currentPath, visited, currentCost + conn.getDistance(), 
                             targetIds, bestPath, bestCost, startNode);
                 
-                // 6. BACKTRACK: Deshacer la elección para poder explorar otras ramas desde `current`.
                 visited.remove(next.getId());
                 currentPath.remove(currentPath.size() - 1);
             }

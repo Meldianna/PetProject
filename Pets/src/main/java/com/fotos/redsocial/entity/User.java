@@ -24,13 +24,13 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true) // ⭐ Solo incluir campos marcados
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
 public class User {
 
     @Id
     @GeneratedValue(UUIDStringGenerator.class)
-    @EqualsAndHashCode.Include // ⭐ Solo el ID y email
+    @EqualsAndHashCode.Include //Solo el ID y email
     @ToString.Include
     private String id;
 
@@ -81,8 +81,6 @@ public class User {
     @Relationship(type = "FRIENDS_WITH", direction = Relationship.Direction.OUTGOING)
     private Set<User> friendship;
 
-    // @Relationship(type = "PREFERS", direction = Relationship.Direction.OUTGOING)
-    // private List<Specie> preferredSpecies;
 
     public User(String name, String email, String phone, Location location){
         this.name = name;
@@ -100,22 +98,16 @@ public class User {
         this.lookingFor = new ArrayList<>();
         this.preferredTraits = new ArrayList<>();
         this.friendship = new HashSet<>();
-        //this.preferredSpecies = new ArrayList<>();
+
     }
     
     public String getId() {
         return id;
     }
 
-    // public List<Specie> getPreferredSpecies() {
-    //     return preferredSpecies;
-    // }
 
     public List<Trait> getPreferredTraits() {
         return preferredTraits;
     }
 
-    // public boolean hasPreference(Specie species) {
-    //     return getPreferredSpecies().contains(species);
-    // }
 }

@@ -7,21 +7,22 @@ import org.springframework.data.neo4j.core.schema.TargetNode;
 
 import com.fotos.redsocial.entity.Trait;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true) 
-@ToString(onlyExplicitlyIncluded = true)
-@NoArgsConstructor 
+@NoArgsConstructor
 @RelationshipProperties
 @Data
 @AllArgsConstructor
-//usada entre nodos User y Trait
+@ToString(onlyExplicitlyIncluded = true) // Excluye @TargetNode para evitar bucles
+// usada entre nodos User y Trait
 public class PrefersRelationship {
-    
-    @Id @GeneratedValue
+
+    @Id
+    @GeneratedValue
+    @ToString.Include
     private String id;
 
     @TargetNode

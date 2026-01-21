@@ -15,7 +15,6 @@ public interface EventRepository extends Neo4jRepository<Event, String>{
        MATCH (s:Shelter {id: $shelterId})-[:LOCATED_AT]->(shelterLocation:Location)
                 MATCH (e:Event)-[:TAKES_PLACE_IN]->(eventLocation:Location)
                 MATCH path = shortestPath((shelterLocation)-[:CONNECTS*0..3]-(eventLocation))
-               // DEVUELVE LAS PROPIEDADES MAPEADAS, CON LA FECHA CONVERTIDA
    RETURN e.id as id, 
           e.name as name,
           date(e.date) as date, //PARSEA LA FECHA PARA EL FORMATO ESPERADO EN JAVA, SIENDO

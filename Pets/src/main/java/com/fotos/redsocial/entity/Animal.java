@@ -20,7 +20,7 @@ import lombok.ToString;
 @Node("Animal")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true) 
 @ToString(onlyExplicitlyIncluded = true)
 public class Animal {
 

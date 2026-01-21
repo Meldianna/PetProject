@@ -12,10 +12,8 @@ import com.fotos.redsocial.entity.Animal;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true) 
 @NoArgsConstructor 
 @RelationshipProperties
@@ -24,8 +22,10 @@ import lombok.ToString;
 public class TakeCareOfRelationship {
 
     @Id @GeneratedValue
+    @ToString.Include
     private String id;
 
+    @ToString.Include
     private LocalDate startDate;
 
     @TargetNode

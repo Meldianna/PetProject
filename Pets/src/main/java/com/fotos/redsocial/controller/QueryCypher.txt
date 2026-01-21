@@ -1,4 +1,4 @@
-// --- FASE 1: Creación/Búsqueda de todos los nodos ---
+// --- FASE 1: Creation of the nodes ---
 
 // MERGE Species
 MERGE (dog:Specie {id: "1"}) 
@@ -59,10 +59,9 @@ MERGE (pet3:Animal {id: "3"})
 MERGE (pet4:Animal {id: "4"}) 
   ON CREATE SET pet4.name = 'Bella', pet4.age = 1, pet4.status = 'AVAILABLE'
 
-// --- FASE 2: Pasar todas las variables de nodos a la creación de relaciones ---
+// --- FASE 2: Creating the relationships ---
 WITH dog, cat, friendly, playful, loc1, loc2, loc3, event1, event2, event3, event4, shelter1, shelter2, shelter3, user1, user2, user3, pet1, pet2, pet3, pet4
 
-// --- FASE 3: Creación/Búsqueda de todas las relaciones ---
 //Friends Connections
 MERGE (user1)-[:FRIENDS_WITH]->(user2)
 MERGE (user1)<-[:FRIENDS_WITH]-(user2)
@@ -116,7 +115,7 @@ MERGE (event4)-[:TAKES_PLACE_IN]->(loc2)
 // User Preferences
 MERGE (user1)-[:LOOKS_FOR]->(dog)
 MERGE (user2)-[:LOOKS_FOR]->(cat)
-MERGE (user3)-[:LOOKS_FOR]->(dog) // Nota: Normalizado de :LOOKS a :LOOKS_FOR por consistencia
+MERGE (user3)-[:LOOKS_FOR]->(dog) 
 MERGE (user1)-[:PREFERS]->(friendly)
 MERGE (user2)-[:PREFERS]->(playful)
 
@@ -130,7 +129,7 @@ MERGE (user3)-[care2:TAKES_CARE_OF]->(pet3)
 MERGE (user1)-[adop1:ADOPTS]->(pet4) 
   ON CREATE SET adop1.startDate = datetime()
 
-// Actualizar estado del animal adoptado (manejado en la misma consulta)
+// Setting Default values for test cases
 SET pet4.status = 'ADOPTED'
 
 // User-Shelter (WORKS_FOR)
